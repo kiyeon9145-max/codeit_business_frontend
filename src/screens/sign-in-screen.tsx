@@ -1,4 +1,4 @@
 const SignInScreen = () => {
-    return <div>로그인</div>
+  return <div>로그인</div>;
 };
-export default SignInScreen
+export default SignInScreen;

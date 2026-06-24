@@ -1,5 +1,5 @@
 const MemoScreen = () => {
-    return <div>메모장</div>;
-  };
-  
-  export default MemoScreen;
+  return <div>메모장</div>;
+};
+
+export default MemoScreen;
