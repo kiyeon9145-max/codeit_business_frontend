@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom";
+
 function App() {
   return (
     <div
@@ -11,25 +13,31 @@ function App() {
         padding: 24,
       }}
     >
-      <header style={{ 
-        flex: 0, 
-        backgroundColor: "#fff",
-        paddingBottom: 16,
-       }}>
+      <header
+        style={{
+          flex: 0,
+          backgroundColor: "#fff",
+          paddingBottom: 16,
+        }}
+      >
         <button>다크모드</button>
-       </header>
+      </header>
 
-      <div style={{ flex: 1 }}>내용</div>
+      <div style={{ flex: 1 }}>
+        <Outlet></Outlet>
+      </div>
 
-      <footer style={{ 
-        flex: 0, 
-        color: "#999",
-        paddingTop: 16,
-        borderTop: "1px solid #eee",
-        textAlign: "center",
-        }}>
-          © {new Date().getFullYear()}(주)메모잇
-        </footer>
+      <footer
+        style={{
+          flex: 0,
+          color: "#999",
+          paddingTop: 16,
+          borderTop: "1px solid #eee",
+          textAlign: "center",
+        }}
+      >
+        © {new Date().getFullYear()}(주)메모잇
+      </footer>
     </div>
   );
 }
