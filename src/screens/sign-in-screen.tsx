@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type SubmitEvent } from "react";
 import { useSelector } from "react-redux";
 import InputComponent from "../components/input-component";
 import ButtonComponent from "../components/button-component";
@@ -8,8 +8,13 @@ const SignInScreen = () => {
   const [email, setEmail] = useState("asd");
   const [password, setPassword] = useState("111");
 
+  const [isPending, setIsPending] = useState(false);
+
   // 함수
-  const onSubmitSignInForm = () => {
+  const onSubmitSignInForm = (e: SubmitEvent) => {
+    e.preventDefault();
+
+    setIsPending(true);
     console.log(email, password, "를 서버에 제출해서 로그인을 시도합니다");
   };
   // 부수효과
@@ -48,7 +53,7 @@ const SignInScreen = () => {
         />
         <div style={{ height: 30 }}></div>
 
-        <ButtonComponent text={"로그인"} type="submit" />
+        <ButtonComponent text={isPending ? "진행중..." : "로그인"} type="submit" />
       </form>
       <ButtonComponent text={"회원가입"} type="button" />
     </div>
