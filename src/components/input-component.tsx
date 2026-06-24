@@ -1,14 +1,17 @@
 type InputComponentProps = {
-    label: string,
-    id: string,
-    type: React.HTMLInputTypeAttribute,
-    placeholder: string,
-}
+  label: string;
+  id: string;
+  type: React.HTMLInputTypeAttribute;
+  placeholder: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement, HTMLInputElement>;
+};
 
 const InputComponent = (props: InputComponentProps) => {
-    const { label, id, type, placeholder } = props
-return (
-<div style={{ marginBottom: 30 }}>
+  const { label, id, type, placeholder, value, onChange } = props;
+
+  return (
+    <div style={{ marginBottom: 30 }}>
       <label style={{ display: "block", marginBottom: 4 }} htmlFor={id}>
         {label}
       </label>
@@ -23,9 +26,11 @@ return (
         }}
         type={type}
         placeholder={placeholder}
-        />
-        </div>
-    );
-}
+        value={value}
+        onChange={onChange}
+      />
+    </div>
+  );
+};
 
 export default InputComponent;

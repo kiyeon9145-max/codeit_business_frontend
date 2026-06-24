@@ -19,12 +19,7 @@ const RootScreen = () => {
   // return null;
 
   // 방법2
-  return (
-    <Navigate
-      to={token === null ? "/signin" : "/memo"}
-      replace={true}
-    />
-  );
+  return <Navigate to={token === null ? "/signin" : "/memo"} replace={true} />;
 };
 
 export default RootScreen;
