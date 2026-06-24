@@ -1,7 +1,10 @@
 import { useState, type SubmitEvent } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InputComponent from "../components/input-component";
 import ButtonComponent from "../components/button-component";
+import { signInRequest } from "../api/auth-api";
+import { authActions } from "../store/auth-slice";
+import { useNavigate } from "react-router-dom";
 
 const SignInScreen = () => {
   // 상태
@@ -11,11 +14,16 @@ const SignInScreen = () => {
   const [isPending, setIsPending] = useState(false);
 
   // 함수
-  const onSubmitSignInForm = (e: SubmitEvent) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const onSubmitSignInForm = async (e: SubmitEvent) => {
     e.preventDefault();
 
     setIsPending(true);
-    console.log(email, password, "를 서버에 제출해서 로그인을 시도합니다");
+    const { token } = await signInRequest({ email, password });
+    console.log(token);
+    dispatch(authActions.signIn({ token }));
+    navigate("/memo");
   };
   // 부수효과
 
@@ -53,7 +61,10 @@ const SignInScreen = () => {
         />
         <div style={{ height: 30 }}></div>
 
-        <ButtonComponent text={isPending ? "진행중..." : "로그인"} type="submit" />
+        <ButtonComponent
+          text={isPending ? "진행중..." : "로그인"}
+          type="submit"
+        />
       </form>
       <ButtonComponent text={"회원가입"} type="button" />
     </div>

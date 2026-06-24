@@ -5,11 +5,23 @@ import { RouterProvider } from "react-router-dom";
 import router from "./router.tsx";
 import { Provider } from "react-redux";
 import store from "./store/store.ts";
+import { setupWorker } from "msw/browser";
+import handlers from "./server/handlers.ts";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>,
-);
+const render = () => {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </StrictMode>,
+  );
+};
+
+const run = async () => {
+  const worker = setupWorker(...handlers);
+  await worker.start();
+  render();
+};
+
+run();

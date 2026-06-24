@@ -5,14 +5,14 @@ type AuthSliceStateType = {
 };
 
 const initialState: AuthSliceStateType = {
-  token: undefined,
+  token: null,
 };
 const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    signIn: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
+    signIn: (state, action: PayloadAction<{ token: string }>) => {
+      state.token = action.payload.token;
     },
     signOut: (state) => {
       state.token = null;
