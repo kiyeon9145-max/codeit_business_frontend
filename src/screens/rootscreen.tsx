@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
+import type { StateType } from "../store/store";
 
 const RootScreen = () => {
   const token = null;
