@@ -62,7 +62,7 @@ const SignInScreen = () => {
   // 화면
   return (
     <div>
-      <h1>로그인</h1>
+      <h1>메모잇</h1>
 
       <div style={{ height: 30 }}></div>
 
@@ -93,7 +93,7 @@ const SignInScreen = () => {
             zodError === null ? "" : parseZodError(zodError, "password")
           }
         />
-        <div style={{ width: "100%", height: 30 }}></div>
+        <div style={{ height: 30 }}></div>
         <ButtonComponent
           style={{ width: "100%", marginBottom: 16 }}
           text={isPending ? "진행중..." : "로그인"}
