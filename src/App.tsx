@@ -12,7 +12,7 @@ const App = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "100vh",
+        minHeight: "100vh",
         maxWidth: 480,
         backgroundColor: "#fff",
         margin: "0 auto",
