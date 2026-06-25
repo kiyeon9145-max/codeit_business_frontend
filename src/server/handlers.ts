@@ -8,11 +8,12 @@ const handlers = [
     const { email, password } = body as { email: string; password: string };
     const foundUser = database.users.find((user) => user.email === email);
     if (foundUser == null || foundUser.password !== password) {
-      return HttpResponse.json({
-        message: "이메일 또는 비밀번호가 일치하지 않습니다.",
-      },
-      {status: 401,}
-    );
+      return HttpResponse.json(
+        {
+          message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+        },
+        { status: 401 },
+      );
     }
 
     const token = crypto.randomUUID();

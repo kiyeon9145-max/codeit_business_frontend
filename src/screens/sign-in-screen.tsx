@@ -3,6 +3,12 @@ import { useNavigate } from "react-router-dom";
 import useSignIn from "../hooks/use-sign-in";
 import InputComponent from "../components/input-component";
 import ButtonComponent from "../components/button-component";
+import z, { email } from "zod";
+
+const signInDataSchema = z.object({
+  email: z.email("이메일 형식이 올바르지 않습니다."),
+  password: z.string().min(4, "비밀번호는 최소 4자 이상입니다."),
+});
 
 const SignInScreen = () => {
   // 상태
@@ -15,8 +21,17 @@ const SignInScreen = () => {
 
   const onSubmitSignInForm = async (e: SubmitEvent) => {
     e.preventDefault();
+
+    const { success, data, error } = signInDataSchema.safeParse({
+      email,
+      password,
+    });
+    if (success === false) {
+      console.log(error);
+      return;
+    }
     signInMutate(
-      { email, password },
+      data,
       () => {
         navigate("/memo");
       },
