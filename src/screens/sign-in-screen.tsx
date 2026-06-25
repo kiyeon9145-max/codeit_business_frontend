@@ -1,30 +1,31 @@
 import { useState, type SubmitEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import useSignIn from "../hooks/use-sign-in";
 import InputComponent from "../components/input-component";
 import ButtonComponent from "../components/button-component";
-import { signInRequest } from "../api/auth-api";
-import { authActions } from "../store/auth-slice";
-import { useNavigate } from "react-router-dom";
 
 const SignInScreen = () => {
   // 상태
-  const [email, setEmail] = useState("asd");
-  const [password, setPassword] = useState("111");
-
-  const [isPending, setIsPending] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // 함수
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { isPending, mutate: signInMutate } = useSignIn();
+
   const onSubmitSignInForm = async (e: SubmitEvent) => {
     e.preventDefault();
-
-    setIsPending(true);
-    const { token } = await signInRequest({ email, password });
-    console.log(token);
-    dispatch(authActions.signIn({ token }));
-    navigate("/memo");
+    signInMutate(
+      { email, password },
+      () => {
+        navigate("/memo");
+      },
+      (err) => {
+        console.log(err);
+      },
+    );
   };
+
   // 부수효과
 
   // 화면
