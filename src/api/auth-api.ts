@@ -1,5 +1,6 @@
 import axios, { isAxiosError } from "axios";
 import store from "../store/store";
+import z from "zod";
 
 const client = axios.create({
   baseURL: "/api",
@@ -28,6 +29,15 @@ export const signInRequest = async (data: {
   try {
     const { email, password } = data;
     const res = await client.post("/signin", { email, password });
+
+    const signInTesDataSchema = z.object({
+      token: z.string(),
+    });
+    const parsed = signInTesDataSchema.safeParse(res.data);
+    if (!parsed.success) {
+      throw parsed.error;
+    }
+
     return res.data;
   } catch (err) {
     if (isAxiosError(err)) {

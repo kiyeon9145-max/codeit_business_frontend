@@ -93,13 +93,18 @@ const SignInScreen = () => {
             zodError === null ? "" : parseZodError(zodError, "password")
           }
         />
-        <div style={{ height: 30 }}></div>
+        <div style={{ width: "100%", height: 30 }}></div>
         <ButtonComponent
+          style={{ width: "100%", marginBottom: 16 }}
           text={isPending ? "진행중..." : "로그인"}
           type="submit"
         />
       </form>
-      <ButtonComponent text={"회원가입"} type="button" />
+      <ButtonComponent
+        style={{ width: "100%", marginBottom: 16 }}
+        text={"회원가입"}
+        type="button"
+      />
     </div>
   );
 };

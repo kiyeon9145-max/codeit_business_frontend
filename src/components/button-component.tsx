@@ -1,14 +1,14 @@
 type ButtonComponentProps = {
   text: string;
   type: "submit" | "reset" | "button";
+  style?: React.CSSProperties;
 };
 
 const ButtonComponent = (props: ButtonComponentProps) => {
-  const { text, type } = props;
+  const { text, type, style } = props;
   return (
     <button
       style={{
-        width: "100%",
         padding: 12,
         cursor: "pointer",
         borderRadius: 8,
@@ -16,7 +16,7 @@ const ButtonComponent = (props: ButtonComponentProps) => {
         backgroundColor: "#3a6bfe",
         color: "#fff",
         fontSize: 16,
-        marginBottom: 16,
+        ...style,
       }}
       type={type}
     >

@@ -1,7 +1,12 @@
 import { Outlet } from "react-router-dom";
 import ToastComponent from "./components/toast-component";
+import ButtonComponent from "./components/button-component";
+import { useSelector } from "react-redux";
+import type { StateType } from "./store/store";
 
 const App = () => {
+  const token = useSelector((state: StateType) => state.auth.token);
+
   return (
     <div
       style={{
@@ -15,14 +20,37 @@ const App = () => {
       }}
     >
       <ToastComponent />
+
       <header
         style={{
           flex: 0,
           backgroundColor: "#fff",
           paddingBottom: 16,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: 12,
         }}
       >
-        <button>다크모드</button>
+        {token ? (
+          <ButtonComponent
+            text="로그아웃"
+            type="button"
+            style={{
+              padding: "6px 12px",
+              fontSize: 12,
+            }}
+          />
+        ) : null}
+        <ButtonComponent
+          text="Dark Mode"
+          type="button"
+          style={{
+            padding: "6px 12px",
+            fontSize: 12,
+          }}
+        />
       </header>
 
       <div style={{ flex: 1 }}>
