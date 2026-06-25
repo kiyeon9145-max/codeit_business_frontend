@@ -1,6 +1,6 @@
-import { use, useState } from "react";
+import { useState } from "react";
+import { ApiError, signInRequest } from "../api/auth-api";
 import { useDispatch } from "react-redux";
-import { signInRequest } from "../api/auth-api";
 import { authActions } from "../store/auth-slice";
 
 const useSignIn = () => {
@@ -10,21 +10,28 @@ const useSignIn = () => {
 
   const mutate = async (
     data: { email: string; password: string },
-    onSucces: () => void,
+    onSuccess: () => void,
     onError: (err: unknown) => void,
   ) => {
     setIsPending(true);
+
     try {
       const { email, password } = data;
       const { token } = await signInRequest({ email, password });
       dispatch(authActions.signIn({ token }));
-      onSucces();
+      onSuccess();
     } catch (err) {
-      onError(err);
+      if (err instanceof ApiError) {
+        onError({ errorCode: err.errorCode });
+        return;
+      }
+
+      throw err;
     } finally {
       setIsPending(false);
     }
   };
+
   return { isPending, mutate };
 };
 

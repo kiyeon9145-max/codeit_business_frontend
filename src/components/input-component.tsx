@@ -5,13 +5,14 @@ type InputComponentProps = {
   placeholder: string;
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement, HTMLInputElement>;
+  errorMessage: string;
 };
 
 const InputComponent = (props: InputComponentProps) => {
-  const { label, id, type, placeholder, value, onChange } = props;
+  const { label, id, type, placeholder, value, onChange, errorMessage } = props;
 
   return (
-    <div style={{ marginBottom: 30 }}>
+    <div style={{ height: 90, marginBottom: 14 }}>
       <label style={{ display: "block", marginBottom: 4 }} htmlFor={id}>
         {label}
       </label>
@@ -29,6 +30,9 @@ const InputComponent = (props: InputComponentProps) => {
         value={value}
         onChange={onChange}
       />
+      <div style={{ color: "red", fontSize: 14, padding: 4 }}>
+        {errorMessage}
+      </div>
     </div>
   );
 };

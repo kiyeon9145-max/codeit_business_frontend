@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import useSignIn from "../hooks/use-sign-in";
 import z from "zod";
 import { parseZodError } from "../utils/zod-error";
+import { ApiError } from "../api/auth-api";
+import { toastActions } from "../store/toast-slice";
+import { useDispatch } from "react-redux";
 
 const signInDataSchema = z.object({
   email: z.email("이메일 형식이 올바르지 않습니다."),
@@ -12,6 +15,8 @@ const signInDataSchema = z.object({
 });
 
 const SignInScreen = () => {
+  const dispatch = useDispatch();
+
   // 상태
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -38,8 +43,16 @@ const SignInScreen = () => {
       () => {
         navigate("/memo");
       },
-      (err) => {
-        console.log(err);
+      (err: { errorCode: string }) => {
+        dispatch(
+          toastActions.set({
+            message:
+              err.errorCode === "INVALID_AUTH"
+                ? "이메일 또는 비밀번호가 잘못되었어요"
+                : "알 수 없는 에러가 발생했어요",
+            code: err.errorCode === "INVALID_AUTH" ? 101 : 500,
+          }),
+        );
       },
     );
   };
@@ -63,10 +76,10 @@ const SignInScreen = () => {
           onChange={(e) => {
             setEmail(() => e.target.value);
           }}
+          errorMessage={
+            zodError === null ? "" : parseZodError(zodError, "email")
+          }
         />
-        {zodError === null ? null : (
-          <span>{parseZodError(zodError, "email")}</span>
-        )}
         <InputComponent
           label="비밀번호"
           id="password"
@@ -76,10 +89,10 @@ const SignInScreen = () => {
           onChange={(e) => {
             setPassword(() => e.target.value);
           }}
+          errorMessage={
+            zodError === null ? "" : parseZodError(zodError, "password")
+          }
         />
-        {zodError === null ? null : (
-          <span>{parseZodError(zodError, "password")}</span>
-        )}
         <div style={{ height: 30 }}></div>
         <ButtonComponent
           text={isPending ? "진행중..." : "로그인"}

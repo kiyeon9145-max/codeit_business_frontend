@@ -1,21 +1,51 @@
+import { useDispatch, useSelector } from "react-redux";
+import type { StateType } from "../store/store";
+import { useEffect } from "react";
+import { toastActions } from "../store/toast-slice";
+
 const ToastComponent = () => {
-    return (
-        <div style={{
-            minWidth: 100,
+  const dispatch = useDispatch();
+
+  const { message, code } = useSelector((state: StateType) => state.toast);
+
+  useEffect(() => {
+    if (message === null) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      dispatch(toastActions.clear());
+    }, 3000);
+
+    return () => {
+      // 클린업
+      clearTimeout(timer);
+    };
+  }, [message, dispatch]);
+
+  return (
+    <div>
+      {message === null ? null : (
+        <div
+          style={{
             position: "fixed",
-            bottom: 30,
+            bottom: 16,
             left: 16,
-            backgroundColor: "#e74c3c",
+            minWidth: 100,
             padding: 12,
             borderRadius: 8,
-            fontSize: 12,
+            backgroundColor: "#e74c3c",
             color: "#fff",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            fontSize: 16,
             textAlign: "center",
-        }}>
-            서버에 알 수 없는 에러가 발생했어요
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          {`${message} (${code})`}
         </div>
-    )
-}
+      )}
+    </div>
+  );
+};
 
 export default ToastComponent;

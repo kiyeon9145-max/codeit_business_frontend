@@ -1,9 +1,7 @@
 import { Outlet } from "react-router-dom";
 import ToastComponent from "./components/toast-component";
-import { useState } from "react";
 
 const App = () => {
-  const [isToastup, setIsToastUp] = useState(true);
   return (
     <div
       style={{
@@ -16,7 +14,7 @@ const App = () => {
         padding: 24,
       }}
     >
-      {isToastup === false ? null : <ToastComponent />}
+      <ToastComponent />
       <header
         style={{
           flex: 0,
@@ -40,10 +38,10 @@ const App = () => {
           textAlign: "center",
         }}
       >
-        © {new Date().getFullYear()}(주)메모잇
+        © {new Date().getFullYear()} (주)메모잇
       </footer>
     </div>
   );
-}
+};
 
 export default App;
