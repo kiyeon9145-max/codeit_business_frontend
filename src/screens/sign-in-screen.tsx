@@ -1,9 +1,10 @@
 import { useState, type SubmitEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import useSignIn from "../hooks/use-sign-in";
 import InputComponent from "../components/input-component";
 import ButtonComponent from "../components/button-component";
-import z, { email } from "zod";
+import { useNavigate } from "react-router-dom";
+import useSignIn from "../hooks/use-sign-in";
+import z from "zod";
+import { parseZodError } from "../utils/zod-error";
 
 const signInDataSchema = z.object({
   email: z.email("이메일 형식이 올바르지 않습니다."),
@@ -12,8 +13,9 @@ const signInDataSchema = z.object({
 
 const SignInScreen = () => {
   // 상태
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [zodError, setZodError] = useState<z.ZodError | null>(null);
 
   // 함수
   const navigate = useNavigate();
@@ -27,9 +29,10 @@ const SignInScreen = () => {
       password,
     });
     if (success === false) {
-      console.log(error);
+      setZodError(error);
       return;
     }
+
     signInMutate(
       data,
       () => {
@@ -58,11 +61,12 @@ const SignInScreen = () => {
           placeholder="이메일을 입력해주세요"
           value={email}
           onChange={(e) => {
-            setEmail(() => {
-              return e.target.value;
-            });
+            setEmail(() => e.target.value);
           }}
         />
+        {zodError === null ? null : (
+          <span>{parseZodError(zodError, "email")}</span>
+        )}
         <InputComponent
           label="비밀번호"
           id="password"
@@ -70,13 +74,13 @@ const SignInScreen = () => {
           placeholder="비밀번호를 입력해주세요"
           value={password}
           onChange={(e) => {
-            setPassword(() => {
-              return e.target.value;
-            });
+            setPassword(() => e.target.value);
           }}
         />
+        {zodError === null ? null : (
+          <span>{parseZodError(zodError, "password")}</span>
+        )}
         <div style={{ height: 30 }}></div>
-
         <ButtonComponent
           text={isPending ? "진행중..." : "로그인"}
           type="submit"

@@ -1,6 +1,9 @@
 import { Outlet } from "react-router-dom";
+import ToastComponent from "./components/toast-component";
+import { useState } from "react";
 
-function App() {
+const App = () => {
+  const [isToastup, setIsToastUp] = useState(true);
   return (
     <div
       style={{
@@ -13,6 +16,7 @@ function App() {
         padding: 24,
       }}
     >
+      {isToastup === false ? null : <ToastComponent />}
       <header
         style={{
           flex: 0,
