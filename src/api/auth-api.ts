@@ -58,8 +58,7 @@ export const signUpRequest = async (data: {
   return res.data;
 };
 
-export const getMe = async (data: { token: string }) => {
-  const { token } = data;
+export const getMe = async () => {
   const res = await client.get("/users/me");
   return res.data;
 };

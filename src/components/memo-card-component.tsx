@@ -6,7 +6,7 @@ type MemoCardComponentProps = {
 };
 
 const MemoCardComponent = (props: MemoCardComponentProps) => {
-  const { title, content, createdAt, onEdit,} = props;
+  const { title, content, createdAt, onEdit } = props;
 
   return (
     <div
