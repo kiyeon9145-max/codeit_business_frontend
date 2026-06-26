@@ -16,7 +16,7 @@ const render = () => {
     <StrictMode>
       <Provider store={store}>
         <QueryClientProvider client={qureyClient}>
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
         </QueryClientProvider>
       </Provider>
     </StrictMode>,

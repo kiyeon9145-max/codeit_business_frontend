@@ -1,7 +1,6 @@
 import { http, delay, HttpResponse } from "msw";
 import database from "./database";
 
-
 const handlers = [
   http.post("/api/signin", async ({ request }) => {
     await delay(500);
@@ -112,6 +111,34 @@ const handlers = [
     );
 
     return HttpResponse.json({ memos });
+  }),
+
+  http.post("/api/memos", async ({ request }) => {
+    await delay(500);
+
+    const authHeader = request.headers.get("Authorization");
+    const token = authHeader?.replace("Bearer ", "");
+
+    const foundSession = database.sessions.find(
+      (session) => session.token === token,
+    );
+    if (foundSession == null) {
+      return HttpResponse.json({ errorCode: "INVALID_TOKEN" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { title, content } = body as { title: string; content: string };
+
+    const newMemo = {
+      id: database.memos.length + 1,
+      email: foundSession.email,
+      title,
+      content,
+      createdAt: new Date().toISOString(),
+    };
+    database.memos.push(newMemo);
+
+    return HttpResponse.json({ memo: newMemo }, { status: 201 });
   }),
 ];
 

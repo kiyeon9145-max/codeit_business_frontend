@@ -19,7 +19,7 @@ const useMemoService = () => {
     },
   });
 
-  return { memos, isLoading, error };
+  return { memos: memos ?? [], isLoading, error };
 };
 
 export default useMemoService;

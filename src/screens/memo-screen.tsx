@@ -5,7 +5,6 @@ import useMe from "../hooks/use-me";
 import useMemoService from "../hooks/use-memo";
 import MemoCardComponent from "../components/memo-card-component";
 
-
 const MemoScreen = () => {
   const navigate = useNavigate();
   const { data: me, isLoading, error } = useMe();

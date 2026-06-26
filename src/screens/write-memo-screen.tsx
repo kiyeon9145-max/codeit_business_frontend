@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
 import { parseZodError } from "../utils/zod-error";
@@ -20,7 +20,7 @@ const writeMemoSchema = z.object({
 });
 
 const WriteMemoScreen = () => {
-  const token = useSelector((state: StateType) => state.auth.token)
+  const token = useSelector((state: StateType) => state.auth.token);
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -28,7 +28,7 @@ const WriteMemoScreen = () => {
 
   const { isPending, mutate } = useMemoMutation();
 
-  const handleSubmit = (e: SubmitEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { success, data, error } = writeMemoSchema.safeParse({

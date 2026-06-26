@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { createMemo } from "../api/memo-apit";
 
-
 const useMemoMutation = () => {
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: { title: string; content: string }) => {
