@@ -78,6 +78,22 @@ const handlers = [
     });
   }),
 
+  http.post("/api/signout", async ({ request }) => {
+    await delay(500);
+
+    const authHeader = request.headers.get("Authorization");
+    const token = authHeader?.replace("Bearer ", "");
+
+    const sessionIndex = database.sessions.findIndex(
+      (session) => session.token === token,
+    );
+    if (sessionIndex !== -1) {
+      database.sessions.splice(sessionIndex, 1);
+    }
+
+    return HttpResponse.json({});
+  }),
+
   http.get("/api/memos", async ({ request }) => {
     await delay(500);
 

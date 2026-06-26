@@ -1,18 +1,17 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import ToastComponent from "./components/toast-component";
 import ButtonComponent from "./components/button-component";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import type { StateType } from "./store/store";
-import { authActions } from "./store/auth-slice";
+import useSignOut from "./hooks/use-sign-out";
 
 const App = () => {
   const token = useSelector((state: StateType) => state.auth.token);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { mutate: signOut } = useSignOut();
 
   const handleSignOut = () => {
-    dispatch(authActions.signOut());
-    navigate("/");
+    signOut(undefined, { onSuccess: () => navigate("/") });
   };
 
   return (

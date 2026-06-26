@@ -1,11 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { getLocalStorage } from "../utils/local-storage";
 
 type AuthSliceStateType = {
   token: string | undefined;
 };
 
 const initialState: AuthSliceStateType = {
-  token: null,
+  token: getLocalStorage("token"),
 };
 const authSlice = createSlice({
   name: "auth",

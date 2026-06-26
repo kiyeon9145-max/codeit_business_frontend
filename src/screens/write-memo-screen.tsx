@@ -8,6 +8,8 @@ import ButtonComponent from "../components/button-component";
 
 import TextareaComponent from "../components/textarea-component";
 import useMemoMutation from "../hooks/use-memo-mutation";
+import { useSelector } from "react-redux";
+import type { StateType } from "../store/store";
 
 const writeMemoSchema = z.object({
   title: z.string().min(1, "제목을 입력해주세요."),
@@ -18,6 +20,7 @@ const writeMemoSchema = z.object({
 });
 
 const WriteMemoScreen = () => {
+  const token = useSelector((state: StateType) => state.auth.token)
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

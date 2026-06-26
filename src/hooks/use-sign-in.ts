@@ -3,6 +3,7 @@ import { signInRequest } from "../api/auth-api";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/auth-slice";
 import { useMutation } from "@tanstack/react-query";
+import { setLocalStorage } from "../utils/local-storage";
 
 const useSignIn = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const useSignIn = () => {
     onSuccess: (res) => {
       const { token } = res;
       dispatch(authActions.signIn({ token }));
+      setLocalStorage("token", token);
     },
   });
 

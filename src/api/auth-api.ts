@@ -42,3 +42,8 @@ export const getMe = async () => {
   const res = await client.get("/users/me");
   return res.data;
 };
+
+export const signOutRequest = async () => {
+  const res = await client.post("/signout");
+  return res.data;
+};
