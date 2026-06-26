@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import useSignIn from "../hooks/use-sign-in";
 import z from "zod";
 import { parseZodError } from "../utils/zod-error";
-import { ApiError } from "../api/auth-api";
 import { toastActions } from "../store/toast-slice";
 import { useDispatch } from "react-redux";
+import type { ApiError } from "../api/client";
 
 const signInDataSchema = z.object({
   email: z.email("이메일 형식이 올바르지 않습니다."),
@@ -38,12 +38,11 @@ const SignInScreen = () => {
       return;
     }
 
-    signInMutate(
-      data,
-      () => {
+    signInMutate(data, {
+      onSuccess: () => {
         navigate("/memo");
       },
-      (err: { errorCode: string }) => {
+      onError: (err: ApiError) => {
         dispatch(
           toastActions.set({
             message:
@@ -54,7 +53,7 @@ const SignInScreen = () => {
           }),
         );
       },
-    );
+    });
   };
 
   // 부수효과

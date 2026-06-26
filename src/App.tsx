@@ -1,11 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import ToastComponent from "./components/toast-component";
 import ButtonComponent from "./components/button-component";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import type { StateType } from "./store/store";
+import { authActions } from "./store/auth-slice";
 
 const App = () => {
   const token = useSelector((state: StateType) => state.auth.token);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    dispatch(authActions.signOut());
+    navigate("/");
+  };
 
   return (
     <div
@@ -37,6 +45,7 @@ const App = () => {
           <ButtonComponent
             text="로그아웃"
             type="button"
+            onClick={handleSignOut}
             style={{
               padding: "6px 12px",
               fontSize: 12,

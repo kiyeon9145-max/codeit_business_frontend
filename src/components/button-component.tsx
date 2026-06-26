@@ -2,10 +2,11 @@ type ButtonComponentProps = {
   text: string;
   type: "submit" | "reset" | "button";
   style?: React.CSSProperties;
+  onClick?: () => void;
 };
 
 const ButtonComponent = (props: ButtonComponentProps) => {
-  const { text, type, style } = props;
+  const { text, type, style, onClick } = props;
   return (
     <button
       style={{
@@ -19,6 +20,7 @@ const ButtonComponent = (props: ButtonComponentProps) => {
         ...style,
       }}
       type={type}
+      onClick={onClick}
     >
       {text}
     </button>

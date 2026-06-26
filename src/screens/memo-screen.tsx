@@ -1,15 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import ButtonComponent from "../components/button-component";
-import MemoCardComponent from "../components/memo-card-component";
+
 import useMe from "../hooks/use-me";
 import useMemoService from "../hooks/use-memo";
+import MemoCardComponent from "../components/memo-card-component";
+
 
 const MemoScreen = () => {
+  const navigate = useNavigate();
   const { data: me, isLoading, error } = useMe();
   const { memos } = useMemoService();
-  // 1. 내 정보를 불러오자
-  // 2. 내가 작성한 메모를 불러오자
-  if (me === null) {
-    return <div>잠시만 기다려 주세요...</div>;
+  console.log(me);
+
+  if (isLoading === true || me === undefined) {
+    return <div>잠시만 기다려주세요...</div>;
   }
 
   const avatarUrl = `https://ui-avatars.com/api/?name=${me.username}&background=random`;
@@ -20,7 +24,7 @@ const MemoScreen = () => {
         style={{
           display: "flex",
           flexDirection: "row",
-          alignContent: "center",
+          alignItems: "center",
           gap: 12,
         }}
       >
@@ -31,22 +35,24 @@ const MemoScreen = () => {
         />
         <h1>{me.username}</h1>
       </div>
+
       <div style={{ height: 30 }}></div>
+
       <ButtonComponent
         text="+ 메모 추가하기"
         type="button"
         style={{ width: "100%" }}
-      />
+        onClick={() => navigate("/memo/write")}
+      ></ButtonComponent>
       <div style={{ height: 30 }}></div>
 
       {memos.map((memo) => (
         <MemoCardComponent
-          key={memo.id}
+          key={memo.title}
           title={memo.title}
           content={memo.content}
-          createdAt={memo.createdAt}
-          onEdit={() => alert(`"${memo.title}" 수정 중...`)}
-        />
+          date={memo.date}
+        ></MemoCardComponent>
       ))}
     </div>
   );

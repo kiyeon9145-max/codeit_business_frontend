@@ -5,45 +5,49 @@ import { getMe } from "../api/auth-api";
 import { useQuery } from "@tanstack/react-query";
 
 const useMe = () => {
-    const token = useSelector((state: StateType) => state.auth.token);
+  const token = useSelector((state: StateType) => state.auth.token);
 
-    const { data, isLoading, error } = useQuery({
-        queryKey: ["me", token],
-        queryFn: () => getMe().then((res) => res.me),
-        enabled: token === null ? false : true,
-    });
+  const { data, isLoading, error } = useQuery({
+    enabled: token !== null ? true : false,
+    queryKey: ["me", token],
+    queryFn: async () => {
+      const { me } = await getMe();
+      return me;
+    },
+  });
 
-    return { data, isLoading, error };
- //   const [data, setData] = useState(null);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [error, setError] = useState(null);
-//   const token = useSelector((state: StateType) => state.auth.token);
+  return { data, isLoading, error };
 
-//   useEffect(() => {
-//     if (token === null) {
-//         return;
-//       }
-//       setIsLoading(true);
-//       getMe()
-//         .then((res) => {
-//           const { me } = res;
-//           setData(() => me);
-//           setError(null);
-//         })
-//         .catch((err) => {
-//             setData(null);
-//             setError(err);
-//         })
-//         .finally(() => {
-//             setIsLoading(false);
-//         });
-        
-//     return () => {
-//       // 클린업
-//     };
-//   }, []);
+  // const [data, setData] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState(null);
 
-//   return { data, isLoading, error };
+  // useEffect(() => {
+  //   if (token === null) {
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   getMe()
+  //     .then((res) => {
+  //       const { me } = res;
+  //       setData(() => me);
+  //       setError(null);
+  //     })
+  //     .catch((err) => {
+  //       setData(null);
+  //       setError(err);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+
+  //   return () => {
+  //     // 클린업
+  //   };
+  // }, [token]);
+
+  // return { data, isLoading, error };
 };
 
 export default useMe;

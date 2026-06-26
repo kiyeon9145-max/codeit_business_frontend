@@ -1,26 +1,6 @@
-import axios, { isAxiosError } from "axios";
-import store from "../store/store";
+import { isAxiosError } from "axios";
 import z from "zod";
-
-const client = axios.create({
-  baseURL: "/api",
-});
-
-client.interceptors.request.use((config) => {
-  if (store.getState().auth.token !== null) {
-    config.headers.Authorization = `Bearer ${store.getState().auth.token}`;
-  }
-  return config;
-});
-
-export class ApiError extends Error {
-  errorCode: string;
-
-  constructor(errorCode: string) {
-    super();
-    this.errorCode = errorCode;
-  }
-}
+import client, { ApiError } from "./client";
 
 export const signInRequest = async (data: {
   email: string;
@@ -30,15 +10,15 @@ export const signInRequest = async (data: {
     const { email, password } = data;
     const res = await client.post("/signin", { email, password });
 
-    const signInTesDataSchema = z.object({
+    const signInResDataSchema = z.object({
       token: z.string(),
     });
-    const parsed = signInTesDataSchema.safeParse(res.data);
-    if (!parsed.success) {
+    const parsed = signInResDataSchema.safeParse(res.data);
+    if (parsed.success === false) {
       throw parsed.error;
     }
 
-    return res.data;
+    return parsed.data;
   } catch (err) {
     if (isAxiosError(err)) {
       throw new ApiError(err.response?.data.errorCode);
